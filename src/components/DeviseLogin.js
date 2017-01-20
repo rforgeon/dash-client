@@ -14,11 +14,22 @@ class DeviseLogin extends Component{
        expiry:         "{{ expiry }}",
        uid:            "{{ uid }}"
       },
+      authProviderPaths: {
+        lyft:    '/auth/lyft',
+        }
     })
   }
 
   componentWillMount(){
     this.configJToker();
+  }
+
+  signUpEmail(){
+    Auth.emailSignUp({
+      email: 'rforgeon@gmail.com',
+      password: 'password',
+      password_confirmation: 'password'
+    });
   }
 
   signIn(){
@@ -27,13 +38,19 @@ class DeviseLogin extends Component{
       password: 'password'
     });
     console.log(Auth);
-    console.log(Auth.user.signedIn)
   }
 
   signOut(){
     Auth.signOut();
     console.log(Auth);
-    console.log(Auth.user.signedIn)
+  }
+
+  connectLyft(){
+    Auth.oAuthSignIn({provider: 'lyft'});
+  }
+
+  getAuth(){
+    console.log(Auth);
   }
 
 
@@ -43,13 +60,21 @@ class DeviseLogin extends Component{
         <h1>
           ⚡️ FlashDash
         </h1>
+        <button onClick={this.signUpEmail}>
+          Sign Up
+        </button>
           <button onClick={this.signIn}>
             Sign In
           </button>
           <button onClick={this.signOut}>
             Sign Out
           </button>
-          {Auth.user.signedIn}
+          <button onClick={this.connectLyft}>
+            Connect Lyft
+          </button>
+          <button onClick={this.getAuth}>
+            Get Auth
+          </button>
       </div>
     )
   }
