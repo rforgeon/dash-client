@@ -6,7 +6,7 @@ var Auth = require('j-toker');
 class DeviseLogin extends Component{
 
   configJToker(){
-    Auth.configure([
+    Auth.configure(
       {
       default: {
         apiUrl: 'http://localhost:3000',
@@ -18,30 +18,10 @@ class DeviseLogin extends Component{
          uid:            "{{ uid }}"
         },
         authProviderPaths: {
-          lyft:    '/auth/lyft',
+          Lyft:    '/users/auth/lyft',
         }
        }
-      },
-        {
-        identity: {
-          apiUrl:                  '//devise-token-auth.dev',
-          signOutUrl:              '/identity_auth/sign_out',
-          emailSignInPath:         '/identity_auth/sign_in',
-          emailRegistrationPath:   '/identity_auth',
-          accountUpdatePath:       '/identity_auth',
-          accountDeletePath:       '/identity_auth',
-          passwordResetPath:       '/identity_auth/password',
-          passwordUpdatePath:      '/identity_auth/password',
-          tokenValidationPath:     '/identity_auth/validate_token',
-          authProviderPaths: {
-            github:    '/identity_user_auth/github',
-            facebook:  '/identity_user_auth/facebook',
-            google:    '/identity_user_auth/google_oauth2'
-          }
-        }
-      }
-
-    ]);
+      });
   }
 
 
@@ -52,27 +32,43 @@ class DeviseLogin extends Component{
 
 
   signUpEmail(){
-    Auth.emailSignUp({
-      email: 'rforgeon@gmail.com',
-      password: 'password',
-      password_confirmation: 'password',
-      //config: 'identity'
-    });
-    PubSub.subscribe('auth.emailRegistration.success', function(ev, msg) {
-      alert('Check your email!');
-    });
-    PubSub.subscribe('auth.emailRegistration.error', function(ev, msg) {
-      alert('There was a error submitting your request. Please try again!');
-    });
+
+    fetch('http://localhost:3000/users',{
+      method: 'post',
+      //mode: 'cors',
+      headers: {'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        user: {
+          email: 'rforgeon@gmail.com',
+          password: 'password',
+          password_confirmation: 'password'
+        }
+      })
+
+    })
+      .then(function(response) {
+        response.json().then(function(data) {
+        console.log(data);
+      });
+    })
   }
 
   signIn(){
-    Auth.emailSignIn({
-      email: 'rforgeon@gmail.com',
-      password: 'password',
-      //config: 'identity'
-    });
-    console.log(Auth);
+    fetch('http://localhost:3000/users/sign_in.json',{
+      method: 'post',
+      body: {
+        'user':{
+          'email': 'rforgeon@gmail.com',
+          'password': 'password',
+        }
+      }
+
+    })
+      .then(function(response) {
+        response.json().then(function(data) {
+        console.log(data);
+      });
+    })
     PubSub.subscribe('auth.validation.success', function(ev) {
       alert('Welcome! (validation)');
     });
@@ -82,8 +78,16 @@ class DeviseLogin extends Component{
 
   }
 
-  signOut(){
-    Auth.signOut();
+  signOutDevise(){
+    fetch('http://localhost:3000/users/sign_out.json',{
+      method: 'delete'
+
+    })
+      .then(function(response) {
+        response.json().then(function(data) {
+        console.log(data);
+      });
+    })
     console.log(Auth);
     PubSub.subscribe('auth.signOut.success', function(ev, msg) {
       alert('Goodbye!');
@@ -94,7 +98,15 @@ class DeviseLogin extends Component{
   }
 
   connectLyft(){
-    Auth.oAuthSignIn({provider: 'lyft'});
+    Auth.oAuthSignIn({provider: 'Lyft'});
+
+    // fetch('http://localhost:3000/users/auth/lyft',{
+    //   method: 'get',
+    //   mode: 'no-cors',
+    //
+    // })
+
+
     PubSub.subscribe('auth.validation.success', function(ev) {
       alert('Welcome!');
     });
@@ -136,7 +148,7 @@ class DeviseLogin extends Component{
           <button onClick={this.signIn}>
             Sign In
           </button>
-          <button onClick={this.signOut}>
+          <button onClick={this.signOutDevise}>
             Sign Out
           </button>
           <button onClick={this.connectLyft}>
