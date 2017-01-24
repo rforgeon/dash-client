@@ -5,15 +5,23 @@ import { browserHistory } from 'react-router';
 //import the root reducer
 import rootReducer from './reducers/index';
 
+var currentUser = {
+  currentUser: null,
+  identity: []
+}
+
+
 
 //create an object from the default data
 const defaultState = {
-  // posts,
-  // comments
+  currentUser,
+  // fetcher,
+  // sourceList,
+  // dashboard
 };
 
 
-const store = createStore(rootReducer, defaultState, enhancers);
+const store = createStore(rootReducer, defaultState);
 
 export const history = syncHistoryWithStore(browserHistory, store);
 

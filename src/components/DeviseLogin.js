@@ -9,7 +9,7 @@ class DeviseLogin extends Component{
     Auth.configure([
       {
       default: {
-        apiUrl: 'http://localhost:3000',
+        apiUrl: 'http://localhost:3000/api',
         tokenFormat: {
          "access-token": "{{ access-token }}",
          "token-type":   "Bearer",
@@ -52,33 +52,44 @@ class DeviseLogin extends Component{
 
 
   signUpEmail(){
-    Auth.emailSignUp({
-      email: 'rforgeon@gmail.com',
-      password: 'password',
-      password_confirmation: 'password',
-      //config: 'identity'
+
+  fetch('http://localhost:3000/api/auth',{
+    method: 'post',
+    //mode: 'cors',
+    headers: {'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        email: 'rforgeon@gmail.com',
+        password: 'password',
+        password_confirmation: 'password'
+    })
+
+  })
+    .then(function(response) {
+      response.json().then(function(data) {
+      console.log(data);
+      //this.props.signInProfile(data.email)
     });
-    PubSub.subscribe('auth.emailRegistration.success', function(ev, msg) {
-      alert('Check your email!');
-    });
-    PubSub.subscribe('auth.emailRegistration.error', function(ev, msg) {
-      alert('There was a error submitting your request. Please try again!');
-    });
-  }
+  })
+}
 
   signIn(){
-    Auth.emailSignIn({
-      email: 'rforgeon@gmail.com',
-      password: 'password',
-      //config: 'identity'
-    });
-    console.log(Auth);
-    PubSub.subscribe('auth.validation.success', function(ev) {
-      alert('Welcome! (validation)');
-    });
-    PubSub.subscribe('auth.validation.error', function(ev, err) {
-      alert('Validation failure.');
-    });
+    fetch('http://localhost:3000/api/auth/sign_in',{
+      method: 'post',
+      //mode: 'cors',
+      headers: {'Content-Type': 'application/json' },
+      body: JSON.stringify({
+
+          email: 'rforgeon@gmail.com',
+          password: 'password',
+
+      })
+
+    })
+      .then(function(response) {
+        response.json().then(function(data) {
+        console.log(data);
+      });
+    })
 
   }
 
@@ -127,9 +138,7 @@ class DeviseLogin extends Component{
   render() {
     return(
       <div>
-        <h1>
-          ⚡️ FlashDash
-        </h1>
+
         <button onClick={this.signUpEmail}>
           Sign Up
         </button>
@@ -141,12 +150,6 @@ class DeviseLogin extends Component{
           </button>
           <button onClick={this.connectLyft}>
             Connect Lyft
-          </button>
-          <button onClick={this.getAuth}>
-            Get Auth
-          </button>
-          <button onClick={this.getUserIDs}>
-            Get User IDs
           </button>
       </div>
     )
