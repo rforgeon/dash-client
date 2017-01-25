@@ -138,11 +138,39 @@ class DeviseLogin extends Component{
   }
 
   getRideHistory(){
-    const access_token = "eSqA-iDJk1xyK5tBP99dpmoTALqm4bC5AUH-Ih-8uVXYNT9b5CXzoDDaH14KbLP6"
+    const access_token = ""
     fetch('https://api.lyft.com/v1/rides?start_time=2016-01-01T21:04:22Z&limit=50',{
       method: 'get',
-      //mode: 'cors',
       headers: {'Authorization': 'Bearer gAAAAABYiMhsudMhO40W4spwW7IKceip9PYkZLaXBKLtqnVzqtPS22Sdp5rJwUTQ8Zreh2cuAcfqMwYpDpoLXYxlvwOUv0LhU1giJUsh5TyOawclnehxOuf5Tsann6dZBcFSGl832R_KjRMgXVBtSAbE4ybUyKyc0cyetFwUL-tIhYh5mKzhIWsEBiSTMUxtB9rr3wIgwM9C9ELMh8uzlhHKdWYX8TVBX4TpBEUCrQzqb8xas8mV-vbWd7gY4buOXjQRt60T61ztfnbf6LNNhseoV3KKfZfFnViRDxH1JsGSsSShJifzH5k=' }
+    })
+      .then(function(response) {
+        response.json().then(function(data) {
+        console.log(data);
+      });
+    })
+  }
+
+  initSandbox(){
+    //const access_token = ""
+    fetch('https://api.lyft.com/v1/rides/',{
+      method: 'POST',
+      headers: {'Authorization': 'Bearer SANDBOX-gAAAAABYiObHMfQ4C7TxYP6s_qVUZPdwELvCq_-p-EbBqjpt9yCM-6eBhbKBlkO7QvOeqTw4s3W6ZoZ1x9rDIk3FaCyEWLV5ykjy2jk6JPTMZ9DHd3QdsuhpZc0kC5hjhhiPcpV6oRbUvCgyq4PAPHUhGHA_1hNaftOqHVRpVUhp5kaCeJ9WJuI8HOFl4bEPjlFCajR2b02hFTY-qdFlWTU_UkbJtQGYvpFoHDI6_RTnnWK56m1faOeIY66l-LKmDxiECsRE5Q1TFupQLr_jeejWA4Nn9fkAsj47mmU5v2zT7nh0HvjxjGyoB9bkO5_BO9u2GX2VBTrInb7qtZZcj77EwChrOLWwRQ=='}
+
+    })
+      .then(function(response) {
+        response.json().then(function(data) {
+        console.log(data);
+      });
+    })
+  }
+
+  runSandbox(){
+    const access_token = ""
+    fetch('https://api.lyft.com/v1/rides/187234782346423842737647234',{
+      method: 'get',
+      //mode: 'cors',
+      headers: {'Authorization': 'Bearer SANDBOX-gAAAAABYiObHMfQ4C7TxYP6s_qVUZPdwELvCq_-p-EbBqjpt9yCM-6eBhbKBlkO7QvOeqTw4s3W6ZoZ1x9rDIk3FaCyEWLV5ykjy2jk6JPTMZ9DHd3QdsuhpZc0kC5hjhhiPcpV6oRbUvCgyq4PAPHUhGHA_1hNaftOqHVRpVUhp5kaCeJ9WJuI8HOFl4bEPjlFCajR2b02hFTY-qdFlWTU_UkbJtQGYvpFoHDI6_RTnnWK56m1faOeIY66l-LKmDxiECsRE5Q1TFupQLr_jeejWA4Nn9fkAsj47mmU5v2zT7nh0HvjxjGyoB9bkO5_BO9u2GX2VBTrInb7qtZZcj77EwChrOLWwRQ==' },
+      data: {"status":"pickedUp"}
     })
       .then(function(response) {
         response.json().then(function(data) {
@@ -171,6 +199,14 @@ class DeviseLogin extends Component{
 
         <button onClick={this.getRideHistory.bind(this)}>
           Get Ride History
+        </button>
+
+        <button onClick={this.initSandbox.bind(this)}>
+          Init Sandbox
+        </button>
+
+        <button onClick={this.runSandbox.bind(this)}>
+          Run Sandbox
         </button>
 
       </div>
