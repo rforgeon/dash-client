@@ -65,6 +65,7 @@ class DeviseLogin extends Component{
 
   })
     .then(function(response) {
+      this.props.signInProfile(response.headers.get('access-token'));
       response.json().then(function(data) {
       console.log(data);
       //this.props.signInProfile(data.email)
@@ -86,6 +87,15 @@ class DeviseLogin extends Component{
 
     })
       .then(function(response) {
+        const token = response.headers.get('access-token');
+        const client = response.headers.get('client');
+        const uid = response.headers.get('uid');
+
+        //this.props.signInProfile(token);
+        console.log(token);
+        console.log(client);
+        console.log(uid);
+
         response.json().then(function(data) {
         console.log(data);
       });
@@ -105,7 +115,13 @@ class DeviseLogin extends Component{
   }
 
   connectLyft(){
-    Auth.oAuthSignIn({provider: 'lyft'});
+    Auth.oAuthSignIn({provider: 'lyft',
+                      params: {
+                        state: "aXzWa_RQca-ncPtGjKsbZA"
+                            }
+                    });
+
+
     PubSub.subscribe('auth.validation.success', function(ev) {
       alert('Welcome!');
     });
@@ -124,33 +140,24 @@ class DeviseLogin extends Component{
     console.log(Auth);
   }
 
-  getUserIDs(){
-    fetch('http://localhost:3000/users/user_identities')
-      .then(function(response) {
-        response.json().then(function(data) {
-        console.log(data);
-      });
-    })
-
-  }
-
 
   render() {
     return(
       <div>
 
-        <button onClick={this.signUpEmail}>
+        <button onClick={this.signUpEmail.bind(this)}>
           Sign Up
         </button>
-          <button onClick={this.signIn}>
-            Sign In
-          </button>
-          <button onClick={this.signOut}>
-            Sign Out
-          </button>
-          <button onClick={this.connectLyft}>
-            Connect Lyft
-          </button>
+        <button onClick={this.signIn.bind(this)}>
+          Sign In
+        </button>
+        <button onClick={this.signOut.bind(this)}>
+          Sign Out
+        </button>
+        <button onClick={this.connectLyft.bind(this)}>
+          Connect Lyft
+        </button>
+
       </div>
     )
   }
