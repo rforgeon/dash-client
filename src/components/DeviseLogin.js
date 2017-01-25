@@ -92,9 +92,9 @@ class DeviseLogin extends Component{
         const uid = response.headers.get('uid');
 
         //this.props.signInProfile(token);
-        console.log(token);
-        console.log(client);
-        console.log(uid);
+        console.log("token: ",token);
+        console.log("client: ",client);
+        console.log("uid: ",uid);
 
         response.json().then(function(data) {
         console.log(data);
@@ -117,7 +117,8 @@ class DeviseLogin extends Component{
   connectLyft(){
     Auth.oAuthSignIn({provider: 'lyft',
                       params: {
-                        state: "aXzWa_RQca-ncPtGjKsbZA"
+                        client: "g5RepUAtNYLRx6kfvPZjLg",
+                        id: 3
                             }
                     });
 
@@ -136,8 +137,18 @@ class DeviseLogin extends Component{
     });
   }
 
-  getAuth(){
-    console.log(Auth);
+  getRideHistory(){
+    const access_token = "eSqA-iDJk1xyK5tBP99dpmoTALqm4bC5AUH-Ih-8uVXYNT9b5CXzoDDaH14KbLP6"
+    fetch('https://api.lyft.com/v1/rides?start_time=2016-01-01T21:04:22Z&limit=50',{
+      method: 'get',
+      //mode: 'cors',
+      headers: {'Authorization': 'Bearer gAAAAABYiMhsudMhO40W4spwW7IKceip9PYkZLaXBKLtqnVzqtPS22Sdp5rJwUTQ8Zreh2cuAcfqMwYpDpoLXYxlvwOUv0LhU1giJUsh5TyOawclnehxOuf5Tsann6dZBcFSGl832R_KjRMgXVBtSAbE4ybUyKyc0cyetFwUL-tIhYh5mKzhIWsEBiSTMUxtB9rr3wIgwM9C9ELMh8uzlhHKdWYX8TVBX4TpBEUCrQzqb8xas8mV-vbWd7gY4buOXjQRt60T61ztfnbf6LNNhseoV3KKfZfFnViRDxH1JsGSsSShJifzH5k=' }
+    })
+      .then(function(response) {
+        response.json().then(function(data) {
+        console.log(data);
+      });
+    })
   }
 
 
@@ -156,6 +167,10 @@ class DeviseLogin extends Component{
         </button>
         <button onClick={this.connectLyft.bind(this)}>
           Connect Lyft
+        </button>
+
+        <button onClick={this.getRideHistory.bind(this)}>
+          Get Ride History
         </button>
 
       </div>
