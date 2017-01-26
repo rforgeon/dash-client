@@ -58,7 +58,7 @@ class DeviseLogin extends Component{
     //mode: 'cors',
     headers: {'Content-Type': 'application/json' },
     body: JSON.stringify({
-        email: 'rforgeon@gmail.com',
+        email: 'test2@gmail.com',
         password: 'password',
         password_confirmation: 'password'
     })
@@ -74,7 +74,7 @@ class DeviseLogin extends Component{
 }
 
   signIn(){
-    fetch('http://localhost:3000/api/auth/sign_in',{
+    fetch('http://localhost:3000/api/auth',{
       method: 'post',
       //mode: 'cors',
       headers: {'Content-Type': 'application/json' },
@@ -118,7 +118,7 @@ class DeviseLogin extends Component{
     Auth.oAuthSignIn({provider: 'lyft',
                       params: {
                         client: "g5RepUAtNYLRx6kfvPZjLg",
-                        id: 3
+                        id: 1
                             }
                     });
 
@@ -154,7 +154,7 @@ class DeviseLogin extends Component{
     //const access_token = ""
     fetch('https://api.lyft.com/v1/rides/',{
       method: 'POST',
-      headers: {'Authorization': 'Bearer SANDBOX-gAAAAABYiObHMfQ4C7TxYP6s_qVUZPdwELvCq_-p-EbBqjpt9yCM-6eBhbKBlkO7QvOeqTw4s3W6ZoZ1x9rDIk3FaCyEWLV5ykjy2jk6JPTMZ9DHd3QdsuhpZc0kC5hjhhiPcpV6oRbUvCgyq4PAPHUhGHA_1hNaftOqHVRpVUhp5kaCeJ9WJuI8HOFl4bEPjlFCajR2b02hFTY-qdFlWTU_UkbJtQGYvpFoHDI6_RTnnWK56m1faOeIY66l-LKmDxiECsRE5Q1TFupQLr_jeejWA4Nn9fkAsj47mmU5v2zT7nh0HvjxjGyoB9bkO5_BO9u2GX2VBTrInb7qtZZcj77EwChrOLWwRQ=='}
+      headers: {'Authorization': 'Bearer SANDBOX-gAAAAABYiPSNFiO_RY7H-5B4HJWz7sEg8IB_tu2BNYe-GqsACKQX1qJsJmXC39iTBvgeMZpUEvFZgdv6olfMx2cV7b_qiSPlXcf5IOwXjzAj6u6N_S3xBqJ73bWR-Sjya_i8wkeV6LKotKU6_BuVPtAp6LjCOb6-SC1W3gifRaUVB6sVWsDe7eVaNRnxVPmFSHtlzirYGpfiu0spwfi2Qjw0BDQ_NfrgscUMdP3cdwqf4ElODw56mSyGcklLUl43Dt3Ah42Q2dvGi-VkQoli5IfE_bIVtBqvQ94qXOqtExJMVF5-k1L5Q-qguaegWwaEGfukm7_C-keCV_Igkx82Z9vm7dwzrsbLhg=='}
 
     })
       .then(function(response) {
@@ -166,11 +166,11 @@ class DeviseLogin extends Component{
 
   runSandbox(){
     const access_token = ""
-    fetch('https://api.lyft.com/v1/rides/187234782346423842737647234',{
+    fetch('https://api.lyft.com/v1/sandbox/ridetypes/',{
       method: 'get',
       //mode: 'cors',
-      headers: {'Authorization': 'Bearer SANDBOX-gAAAAABYiObHMfQ4C7TxYP6s_qVUZPdwELvCq_-p-EbBqjpt9yCM-6eBhbKBlkO7QvOeqTw4s3W6ZoZ1x9rDIk3FaCyEWLV5ykjy2jk6JPTMZ9DHd3QdsuhpZc0kC5hjhhiPcpV6oRbUvCgyq4PAPHUhGHA_1hNaftOqHVRpVUhp5kaCeJ9WJuI8HOFl4bEPjlFCajR2b02hFTY-qdFlWTU_UkbJtQGYvpFoHDI6_RTnnWK56m1faOeIY66l-LKmDxiECsRE5Q1TFupQLr_jeejWA4Nn9fkAsj47mmU5v2zT7nh0HvjxjGyoB9bkO5_BO9u2GX2VBTrInb7qtZZcj77EwChrOLWwRQ==' },
-      data: {"status":"pickedUp"}
+      headers: {'Authorization': 'Bearer SANDBOX-gAAAAABYiPSNFiO_RY7H-5B4HJWz7sEg8IB_tu2BNYe-GqsACKQX1qJsJmXC39iTBvgeMZpUEvFZgdv6olfMx2cV7b_qiSPlXcf5IOwXjzAj6u6N_S3xBqJ73bWR-Sjya_i8wkeV6LKotKU6_BuVPtAp6LjCOb6-SC1W3gifRaUVB6sVWsDe7eVaNRnxVPmFSHtlzirYGpfiu0spwfi2Qjw0BDQ_NfrgscUMdP3cdwqf4ElODw56mSyGcklLUl43Dt3Ah42Q2dvGi-VkQoli5IfE_bIVtBqvQ94qXOqtExJMVF5-k1L5Q-qguaegWwaEGfukm7_C-keCV_Igkx82Z9vm7dwzrsbLhg==' },
+      data: {"lat": 37.7, "lng": -122.2, "ride_types": ["lyft", "lyft_line"]}
     })
       .then(function(response) {
         response.json().then(function(data) {
