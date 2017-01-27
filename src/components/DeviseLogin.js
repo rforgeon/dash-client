@@ -3,6 +3,7 @@ var PubSub = require('pubsub-js');
 var Auth = require('j-toker');
 //import { Link } from 'react-router';
 
+
 class DeviseLogin extends Component{
 
   configJToker(){
@@ -21,24 +22,6 @@ class DeviseLogin extends Component{
           lyft:    '/auth/lyft',
         }
        }
-      },
-        {
-        identity: {
-          apiUrl:                  '//devise-token-auth.dev',
-          signOutUrl:              '/identity_auth/sign_out',
-          emailSignInPath:         '/identity_auth/sign_in',
-          emailRegistrationPath:   '/identity_auth',
-          accountUpdatePath:       '/identity_auth',
-          accountDeletePath:       '/identity_auth',
-          passwordResetPath:       '/identity_auth/password',
-          passwordUpdatePath:      '/identity_auth/password',
-          tokenValidationPath:     '/identity_auth/validate_token',
-          authProviderPaths: {
-            github:    '/identity_user_auth/github',
-            facebook:  '/identity_user_auth/facebook',
-            google:    '/identity_user_auth/google_oauth2'
-          }
-        }
       }
 
     ]);
@@ -51,11 +34,10 @@ class DeviseLogin extends Component{
   }
 
 
-  signUpEmail(){
+  signIn(){
 
   fetch('http://localhost:3000/api/auth',{
     method: 'post',
-    //mode: 'cors',
     headers: {'Content-Type': 'application/json' },
     body: JSON.stringify({
         email: 'test2@gmail.com',
@@ -65,53 +47,51 @@ class DeviseLogin extends Component{
 
   })
     .then(function(response) {
-      this.props.signInProfile(response.headers.get('access-token'));
+      var token = response.headers.get('access-token')
+      var client = response.headers.get('client')
+      var uid = response.headers.get('uid')
+      console.log('token:',token,'client:',client,'uid:',uid)
+      this.props.signInProfile(token,client,uid);
       response.json().then(function(data) {
       console.log(data);
-      //this.props.signInProfile(data.email)
     });
   })
 }
 
-  signIn(){
-    fetch('http://localhost:3000/api/auth',{
-      method: 'post',
-      //mode: 'cors',
-      headers: {'Content-Type': 'application/json' },
-      body: JSON.stringify({
+  signUp(){
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+    var passwordConfirm = document.getElementById("passwordConfirm").value;
 
-          email: 'rforgeon@gmail.com',
-          password: 'password',
+    this.props.setAuthInput(email,password,passwordConfirm);
+    this.props.signUpProfile();
+    this.props.setAuthInput('','','');
 
-      })
-
-    })
-      .then(function(response) {
-        const token = response.headers.get('access-token');
-        const client = response.headers.get('client');
-        const uid = response.headers.get('uid');
-
-        //this.props.signInProfile(token);
-        console.log("token: ",token);
-        console.log("client: ",client);
-        console.log("uid: ",uid);
-
-        response.json().then(function(data) {
-        console.log(data);
-      });
-    })
-
+    document.getElementById("email").value = '';
+    document.getElementById("password").value= '';
+    document.getElementById("passwordConfirm").value= '';
   }
 
   signOut(){
-    Auth.signOut();
-    console.log(Auth);
-    PubSub.subscribe('auth.signOut.success', function(ev, msg) {
-      alert('Goodbye!');
-    });
-    PubSub.subscribe('auth.signOut.success', function(ev, msg) {
-      alert('There was a problem with your sign out attempt. Please try again!');
-    });
+    // const url = 'http://localhost:3000/api/auth/sign_out';
+    // fetch(url,{
+    //   method: 'DELETE',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'uid': this.props.currentUser.uid,
+    //     'client': this.props.currentUser.client,
+    //     'access-token': this.props.currentUser.token
+    //   }
+    // })
+    //   .then(function(response) {
+    //     response.json().then(function(data) {
+    //     console.log(data);
+    //
+    //     store.dispatch({ type: 'SIGN_UP_PROFILE', token: '', client: '', uid: ''})
+    //   })
+    // })
+
+    this.props.signOutProfile();
   }
 
   connectLyft(){
@@ -183,10 +163,19 @@ class DeviseLogin extends Component{
   render() {
     return(
       <div>
+        <div style={{margin:20+'px'}}>
+          <div>
+            Email: <input type="text" id="email"/>
+            Password: <input type="text" id="password"/>
+            Confirm Password: <input type="text" id="passwordConfirm"/>
+          </div>
 
-        <button onClick={this.signUpEmail.bind(this)}>
-          Sign Up
-        </button>
+          <button onClick={this.signUp.bind(this)}>
+            Sign Up
+          </button>
+        </div>
+
+
         <button onClick={this.signIn.bind(this)}>
           Sign In
         </button>

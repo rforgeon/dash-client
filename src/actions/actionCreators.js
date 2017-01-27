@@ -1,21 +1,34 @@
 import * as types from '../constants/ActionTypes';
+import { CALL_API } from 'redux-api-middleware';
+import { normalize, schema } from 'normalizr';
 
-export function signInProfile(user){
+
+export function signUpProfile(){
   return{
-    type: types.SIGN_IN_PROFILE,
-    user
+    type: types.FETCH_SIGN_UP_REQUEST
+
   }
 }
 
 export function signOutProfile(){
+  console.log('enter "signOutProfile"');
   return{
-    type: types.SIGN_OUT_PROFILE,
+    type: types.FETCH_SIGN_OUT_REQUEST
+
   }
 }
+
+export function setAuthInput(email, password, passwordConfirm){
+  return{
+    type: types.AUTH_INPUT,
+    email,
+    password,
+    passwordConfirm
+  }
+}
+
 
 
 //addMetricResults
 //addSource
 //removeSource
-
-//setFetchedAlready

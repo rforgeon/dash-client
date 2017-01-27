@@ -1,8 +1,10 @@
-import {SIGN_IN_PROFILE, SIGN_OUT_PROFILE, ADD_SOURCE, REMOVE_SOURCE} from '../constants/ActionTypes'
+import {SIGN_IN_PROFILE, SIGN_UP_PROFILE, SIGN_OUT_PROFILE, ADD_SOURCE, REMOVE_SOURCE} from '../constants/ActionTypes'
 
 
 var defaultState = {
-  currentUser: null,
+  token: null,
+  client: null,
+  uid: null,
   identity: [
     {lyft:
       {
@@ -20,21 +22,16 @@ function currentUser(state = defaultState, action){
   switch(action.type){
 
 
-    case SIGN_IN_PROFILE :
+    case SIGN_UP_PROFILE :
 
       return {
-        currentUser: action.user,
+        token: action.token,
+        client: action.client,
+        uid: action.uid,
         identity:
         [
           ...state
         ]
-      }
-
-    case SIGN_OUT_PROFILE :
-
-      return {
-        currentUser: null,
-        identity: []
       }
 
     case ADD_SOURCE :
@@ -48,7 +45,7 @@ function currentUser(state = defaultState, action){
               token: action.token,
               tokenRefresh: action.refreshToken,
               uid: action.uid,
-              index: 2
+              index: state.index+1
             }
           }
         ]

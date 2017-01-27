@@ -6,7 +6,8 @@ import DeviseLogin from './DeviseLogin';
 
 function mapStateToProps(state){
   return {
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
+    authInput: state.authInput
   }
 }
 
