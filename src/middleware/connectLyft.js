@@ -22,6 +22,8 @@ const fetchResultsRequest = (store, action) => {
       var uid = response.headers.get('uid')
       response.json().then(function(data) {
         console.log(data);
+        const id_num = data.id
+        console.log(id_num);
 
         store.dispatch({ type: 'SET_PROFILE', token: token, client: client, uid: uid})
         store.dispatch({ type: 'FETCH_SIGN_IN_SUCCESS' });

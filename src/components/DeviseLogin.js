@@ -66,9 +66,9 @@ class DeviseLogin extends Component{
   }
 
   connectLyft(){
-    const url = 'http://localhost:3000/api/auth/validate_token';
+    const url = 'http://localhost:3000/api/auth/sign_in';
     fetch(url,{
-      method: 'get',
+      method: 'post',
       headers: {
         'Content-Type': 'application/json',
         'uid': this.props.currentUser.uid,
