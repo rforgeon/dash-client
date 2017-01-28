@@ -11,9 +11,15 @@ export function signUpProfile(){
 }
 
 export function signOutProfile(){
-  console.log('enter "signOutProfile"');
   return{
     type: types.FETCH_SIGN_OUT_REQUEST
+
+  }
+}
+
+export function signInProfile(){
+  return{
+    type: types.FETCH_SIGN_IN_REQUEST
 
   }
 }

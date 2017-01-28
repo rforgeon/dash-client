@@ -18,7 +18,7 @@ const fetchResultsRequest = (store, action) => {
     }
   })
     .then(function(response) {
-      store.dispatch({ type: 'SIGN_UP_PROFILE', token: '', client: '', uid: ''});
+      store.dispatch({ type: 'SET_PROFILE', token: '', client: '', uid: ''});
       store.dispatch({ type: 'FETCH_SIGN_UP_SUCCESS' });
 
       response.json().then(function(data) {

@@ -2,14 +2,15 @@ import { createStore, applyMiddleware, compose} from 'redux';
 import { apiMiddleware } from 'redux-api-middleware';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { browserHistory } from 'react-router';
-// import { loadState, saveState } from './localStorage';
 import * as storage from 'redux-storage'
 
 
 //import the root reducer
 import rootReducer from './reducers/index';
+//import middlewares
 import signUpMiddleware from './middleware/userSignUp';
 import signOutMiddleware from './middleware/userSignOut';
+import signInMiddleware from './middleware/userSignIn';
 
 
 import createEngine from 'redux-storage-engine-localstorage';
@@ -20,6 +21,7 @@ const persistedState = storage.createMiddleware(engine);
 const middlewares = [
   signUpMiddleware,
   signOutMiddleware,
+  signInMiddleware,
   persistedState
 ]
 

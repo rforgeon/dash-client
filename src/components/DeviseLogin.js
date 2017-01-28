@@ -33,30 +33,19 @@ class DeviseLogin extends Component{
 
   }
 
-
   signIn(){
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+    var passwordConfirm = document.getElementById("passwordConfirm").value;
 
-  fetch('http://localhost:3000/api/auth',{
-    method: 'post',
-    headers: {'Content-Type': 'application/json' },
-    body: JSON.stringify({
-        email: 'test2@gmail.com',
-        password: 'password',
-        password_confirmation: 'password'
-    })
+    this.props.setAuthInput(email,password,passwordConfirm);
+    this.props.signInProfile();
+    this.props.setAuthInput('','','');
 
-  })
-    .then(function(response) {
-      var token = response.headers.get('access-token')
-      var client = response.headers.get('client')
-      var uid = response.headers.get('uid')
-      console.log('token:',token,'client:',client,'uid:',uid)
-      this.props.signInProfile(token,client,uid);
-      response.json().then(function(data) {
-      console.log(data);
-    });
-  })
-}
+    document.getElementById("email").value = '';
+    document.getElementById("password").value= '';
+    document.getElementById("passwordConfirm").value= '';
+  }
 
   signUp(){
     var email = document.getElementById("email").value;
@@ -73,48 +62,50 @@ class DeviseLogin extends Component{
   }
 
   signOut(){
-    // const url = 'http://localhost:3000/api/auth/sign_out';
-    // fetch(url,{
-    //   method: 'DELETE',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'uid': this.props.currentUser.uid,
-    //     'client': this.props.currentUser.client,
-    //     'access-token': this.props.currentUser.token
-    //   }
-    // })
-    //   .then(function(response) {
-    //     response.json().then(function(data) {
-    //     console.log(data);
-    //
-    //     store.dispatch({ type: 'SIGN_UP_PROFILE', token: '', client: '', uid: ''})
-    //   })
-    // })
-
     this.props.signOutProfile();
   }
 
   connectLyft(){
-    Auth.oAuthSignIn({provider: 'lyft',
-                      params: {
-                        client: "g5RepUAtNYLRx6kfvPZjLg",
-                        id: 1
-                            }
-                    });
+    const url = 'http://localhost:3000/api/auth/validate_token';
+    fetch(url,{
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json',
+        'uid': this.props.currentUser.uid,
+        'client': this.props.currentUser.client,
+        'access-token': this.props.currentUser.token
+      }
+    })
+      .then(function(response) {
+
+        response.json().then(function(data) {
+          console.log(data);
+          var id = data.id
+          console.log(id);
+        })
+      });
 
 
-    PubSub.subscribe('auth.validation.success', function(ev) {
-      alert('Welcome!');
-    });
-    PubSub.subscribe('auth.validation.error', function(ev, err) {
-      alert('Validation failure.');
-    });
-    PubSub.subscribe('auth.oAuthSignIn.success', function(ev, msg) {
-      alert('Welcome! (OAuth2)');
-    });
-    PubSub.subscribe('auth.oAuthSignIn.error', function(ev, msg) {
-      alert('There was an error authenticating your account! (OAuth)');
-    });
+    // Auth.oAuthSignIn({provider: 'lyft',
+    //                   params: {
+    //                     client: this.props.currentUser.client,
+    //                     id: 1
+    //                         }
+    //                 });
+    //
+    //
+    // PubSub.subscribe('auth.validation.success', function(ev) {
+    //   alert('Welcome!');
+    // });
+    // PubSub.subscribe('auth.validation.error', function(ev, err) {
+    //   alert('Validation failure.');
+    // });
+    // PubSub.subscribe('auth.oAuthSignIn.success', function(ev, msg) {
+    //   alert('Welcome! (OAuth2)');
+    // });
+    // PubSub.subscribe('auth.oAuthSignIn.error', function(ev, msg) {
+    //   alert('There was an error authenticating your account! (OAuth)');
+    // });
   }
 
   getRideHistory(){
@@ -175,6 +166,9 @@ class DeviseLogin extends Component{
           </button>
         </div>
 
+        <div>
+          <h3>Current User: {this.props.currentUser.uid}</h3>
+        </div>
 
         <button onClick={this.signIn.bind(this)}>
           Sign In
