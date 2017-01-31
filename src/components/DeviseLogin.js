@@ -66,57 +66,57 @@ class DeviseLogin extends Component{
   }
 
   connectLyft(){
-    const url = 'http://localhost:3000/api/auth/sign_in';
-    fetch(url,{
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-        'uid': this.props.currentUser.uid,
-        'client': this.props.currentUser.client,
-        'access-token': this.props.currentUser.token
-      }
-    })
-      .then(function(response) {
-
-        response.json().then(function(data) {
-          console.log(data);
-          var id = data.id
-          console.log(id);
-        })
-      });
-
-
-    // Auth.oAuthSignIn({provider: 'lyft',
-    //                   params: {
-    //                     client: this.props.currentUser.client,
-    //                     id: 1
-    //                         }
-    //                 });
+    // const url = 'http://localhost:3000/api/auth/sign_in';
+    // fetch(url,{
+    //   method: 'post',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'uid': this.props.currentUser.uid,
+    //     'client': this.props.currentUser.client,
+    //     'access-token': this.props.currentUser.token
+    //   }
+    // })
+    //   .then(function(response) {
     //
-    //
-    // PubSub.subscribe('auth.validation.success', function(ev) {
-    //   alert('Welcome!');
-    // });
-    // PubSub.subscribe('auth.validation.error', function(ev, err) {
-    //   alert('Validation failure.');
-    // });
-    // PubSub.subscribe('auth.oAuthSignIn.success', function(ev, msg) {
-    //   alert('Welcome! (OAuth2)');
-    // });
-    // PubSub.subscribe('auth.oAuthSignIn.error', function(ev, msg) {
-    //   alert('There was an error authenticating your account! (OAuth)');
-    // });
+    //     response.json().then(function(data) {
+    //       console.log(data);
+    //       var id = data.id
+    //       console.log(id);
+    //     })
+    //   });
+
+
+    Auth.oAuthSignIn({provider: 'lyft',
+                      params: {
+                        client: this.props.currentUser.client,
+                        id: this.props.currentUser.id_num
+                            }
+                    });
+
+
+    PubSub.subscribe('auth.validation.success', function(ev) {
+      alert('Welcome!');
+    });
+    PubSub.subscribe('auth.validation.error', function(ev, err) {
+      alert('Validation failure.');
+    });
+    PubSub.subscribe('auth.oAuthSignIn.success', function(ev, msg) {
+      alert('Welcome! (OAuth2)');
+    });
+    PubSub.subscribe('auth.oAuthSignIn.error', function(ev, msg) {
+      alert('There was an error authenticating your account! (OAuth)');
+    });
   }
 
   getRideHistory(){
-    const access_token = ""
+    const access_token = this.props.currentUser.lyft_token
     fetch('https://api.lyft.com/v1/rides?start_time=2016-01-01T21:04:22Z&limit=50',{
       method: 'get',
-      headers: {'Authorization': 'Bearer gAAAAABYiMhsudMhO40W4spwW7IKceip9PYkZLaXBKLtqnVzqtPS22Sdp5rJwUTQ8Zreh2cuAcfqMwYpDpoLXYxlvwOUv0LhU1giJUsh5TyOawclnehxOuf5Tsann6dZBcFSGl832R_KjRMgXVBtSAbE4ybUyKyc0cyetFwUL-tIhYh5mKzhIWsEBiSTMUxtB9rr3wIgwM9C9ELMh8uzlhHKdWYX8TVBX4TpBEUCrQzqb8xas8mV-vbWd7gY4buOXjQRt60T61ztfnbf6LNNhseoV3KKfZfFnViRDxH1JsGSsSShJifzH5k=' }
+      headers: {'Authorization': 'Bearer '+access_token}
     })
       .then(function(response) {
-        response.json().then(function(data) {
-        console.log(data);
+        response.json().then(function(object) {
+        console.log(object);
       });
     })
   }

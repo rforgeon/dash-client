@@ -6,16 +6,9 @@ var defaultState = {
   client: null,
   uid: null,
   id_num: null,
-  identity: [
-    {lyft:
-      {
-        token: null,
-        tokenRefresh: null,
-        uid: null,
-        index: 1
-      }
-    }
-  ]
+  lyft_token: null,
+  lyft_refresh_token: null,
+  lyft_expires_at: null
 }
 
 function currentUser(state = defaultState, action){
@@ -30,10 +23,9 @@ function currentUser(state = defaultState, action){
         client: action.client,
         uid: action.uid,
         id_num: action.id_num,
-        identity:
-        [
-          ...state
-        ]
+        lyft_token: action.lyft_token,
+        lyft_refresh_token: action.lyft_refresh_token,
+        lyft_expires_at: action.lyft_expires_at
       }
 
     case ADD_SOURCE :

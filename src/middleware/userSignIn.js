@@ -22,12 +22,22 @@ const fetchResultsRequest = (store, action) => {
       var token = response.headers.get('access-token')
       var client = response.headers.get('client')
       var uid = response.headers.get('uid')
-      response.json().then(function(data) {
-        console.log(data);
-        const id_num = data.id
-        console.log('data.id',id_num);
+      response.json().then(function(object) {
+        const id_num = object.data.id
+        var lyft_token_long = object.data.lyft_token
+        // var re = \\([^\\]+)\\;
+        // var re = new RegExp(lyft_token_long);
+        const lyft_token = lyft_token_long
+        const lyft_refresh_token = object.data.lyft_refresh_token
+        const lyft_expires_at = object.data.lyft_expires_at
 
-        store.dispatch({ type: 'SET_PROFILE', token: token, client: client, uid: uid})
+        store.dispatch({ type: 'SET_PROFILE', token: token,
+                                              client: client,
+                                              uid: uid,
+                                              id_num: id_num,
+                                              lyft_token: lyft_token,
+                                              lyft_refresh_token: lyft_refresh_token,
+                                              lyft_expires_at: lyft_expires_at})
         store.dispatch({ type: 'FETCH_SIGN_IN_SUCCESS' });
 
       })
