@@ -25,10 +25,7 @@ const fetchResultsRequest = (store, action) => {
 
       response.json().then(function(object) {
         const id_num = object.data.id
-        var lyft_token_long = object.data.lyft_token
-        // var re = /\\([^\\]+)\\/;
-        // var re = new RegExp(lyft_token_long);
-        const lyft_token = lyft_token_long
+        const lyft_token = object.data.lyft_token
         const lyft_refresh_token = object.data.lyft_refresh_token
         const lyft_expires_at = object.data.lyft_expires_at
 
