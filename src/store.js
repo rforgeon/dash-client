@@ -11,6 +11,10 @@ import rootReducer from './reducers/index';
 import signUpMiddleware from './middleware/userSignUp';
 import signOutMiddleware from './middleware/userSignOut';
 import signInMiddleware from './middleware/userSignIn';
+import getLyftTokenMiddleware from './middleware/getLyftToken';
+import metricsMiddleware from './middleware/metrics';
+import yelpMiddleware from './middleware/yelp';
+
 
 
 import createEngine from 'redux-storage-engine-localstorage';
@@ -22,18 +26,20 @@ const middlewares = [
   signUpMiddleware,
   signOutMiddleware,
   signInMiddleware,
+  getLyftTokenMiddleware,
+  metricsMiddleware,
+  yelpMiddleware,
   persistedState
 ]
 
-//const persistedState = loadState();
-
-//const store = createStore(rootReducer, applyMiddleware(...middlewares));
 
 const createStoreWithMiddleware = applyMiddleware(...middlewares)(createStore);
 const store = createStoreWithMiddleware(rootReducer);
 
 const load = storage.createLoader(engine);
 load(store);
+
+
 
 export const history = syncHistoryWithStore(browserHistory, store);
 

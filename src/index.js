@@ -12,7 +12,7 @@ import store, { history } from './store';
 //Import Components
 import App from './components/App';
 import DeviseLogin from './components/DeviseLogin';
-// import Dashboard from './components/Dashboard';
+import Dashboard from './components/Dashboard';
 // import sourceList from './components/SourceList';
 
 
@@ -21,6 +21,7 @@ const router = (
   <Router history={history}>
     <Route path="/" component={App}>
       <IndexRoute component={DeviseLogin}></IndexRoute>
+      <Route path="/dashboard" component={Dashboard}/>
     </Route>
   </Router>
   </Provider>

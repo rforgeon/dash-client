@@ -12,7 +12,7 @@ function authInput(state = defaultState, action){
   switch(action.type){
 
     case AUTH_INPUT :
-
+      console.log("AUTH_INPUT")
       return {
         email: action.email,
         password: action.password,

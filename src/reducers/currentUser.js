@@ -1,4 +1,4 @@
-import {SIGN_IN_PROFILE, SET_PROFILE, SIGN_UP_PROFILE, SIGN_OUT_PROFILE, ADD_SOURCE, REMOVE_SOURCE} from '../constants/ActionTypes'
+import {SET_PROFILE, SET_LYFT_TOKEN, ADD_SOURCE, REMOVE_SOURCE} from '../constants/ActionTypes'
 
 
 var defaultState = {
@@ -17,7 +17,7 @@ function currentUser(state = defaultState, action){
 
 
     case SET_PROFILE :
-
+      console.log("enter SET_PROFILE")
       return {
         token: action.token,
         client: action.client,
@@ -28,32 +28,16 @@ function currentUser(state = defaultState, action){
         lyft_expires_at: action.lyft_expires_at
       }
 
-    case ADD_SOURCE :
-
+    case SET_LYFT_TOKEN :
+      console.log("Enter SET_LYFT_TOKEN")
       return {
-        currentUser: action.user,
-        identity: [
-          ...state,
-          {[action.sourceName]:
-            {
-              token: action.token,
-              tokenRefresh: action.refreshToken,
-              uid: action.uid,
-              index: state.index+1
-            }
-          }
-        ]
-      }
-
-    case REMOVE_SOURCE :
-
-      return {
-        currentUser: null,
-        identity:
-        [
-          ...state.slice(0,action.index),
-          ...state.slice(action.index+1)
-        ]
+        token: state.token,
+        client: state.client,
+        uid: state.uid,
+        id_num: state.id_num,
+        lyft_token: action.lyft_token,
+        lyft_refresh_token: state.lyft_refresh_token,
+        lyft_expires_at: state.lyft_expires_at
       }
 
     default:

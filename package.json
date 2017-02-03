@@ -8,10 +8,12 @@
   "dependencies": {
     "browserify": "^13.3.0",
     "j-toker": "0.0.10-beta3",
+    "load-script": "^1.0.0",
     "lodash": "^4.17.4",
     "normalizr": "^3.1.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-password-mask": "^2.3.5",
     "react-redux": "^5.0.2",
     "react-router": "^3.0.2",
     "react-router-redux": "^4.0.7",

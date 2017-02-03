@@ -19,7 +19,7 @@ const fetchResultsRequest = (store, action) => {
   })
     .then(function(response) {
       store.dispatch({ type: 'SET_PROFILE', token: '', client: '', uid: ''});
-      store.dispatch({ type: 'FETCH_SIGN_UP_SUCCESS' });
+      store.dispatch({ type: 'FETCH_SIGN_OUT_SUCCESS' });
 
       response.json().then(function(data) {
       console.log(data);
