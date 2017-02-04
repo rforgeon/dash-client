@@ -59,6 +59,10 @@ class Dashboard extends Component{
           Refresh Token
         </button>
 
+        <button onClick={this.props.getYelp.bind(this)}>
+          Yelp!
+        </button>
+
         <ol>
           <div>
 
@@ -67,7 +71,7 @@ class Dashboard extends Component{
                 key={index}
                 lat={tile.destination.lat}
                 lng={tile.destination.lng}
-                getYelp={this.props.getYelp}
+                //getYelp={this.props.getYelp}
                 tile={tile}
               />
             )}

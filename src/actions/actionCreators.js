@@ -42,9 +42,8 @@ export function setAuthInput(email, password, passwordConfirm){
 
 export function getRideHistory(){
   return{
-    type: types.FETCH_METRICS_REQUEST,
-    type: types.FETCH_YELP_REQUEST
-  }
+    type: types.FETCH_METRICS_REQUEST
+    }
 }
 
 export function getYelp(){
