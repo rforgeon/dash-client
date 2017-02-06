@@ -18,7 +18,7 @@ const Main = React.createClass({
         <div >
           <h1>
             ⚡️
-            <Link to={this.setTitleLink}>FlashDash</Link>
+            <Link to='/'>FlashDash</Link>
           </h1>
           {React.cloneElement(this.props.children, this.props)}
         </div>

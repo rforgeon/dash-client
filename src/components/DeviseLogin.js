@@ -35,6 +35,26 @@ class DeviseLogin extends Component{
 
   }
 
+  componentDidMount(){
+
+
+  }
+
+
+  connectLyft(){
+
+    Auth.oAuthSignIn({provider: 'lyft',
+                      // params: {
+                      //   client: this.props.currentUser.client,
+                      //   id: this.props.currentUser.id_num
+                      //       }
+                    });
+
+    //after connecting, refresh client side token
+    //this.props.getLyftToken();
+
+  }
+
   signIn(){
     var email = document.getElementById("email").value;
     var password = document.getElementById("password").value;
@@ -116,6 +136,18 @@ class DeviseLogin extends Component{
         <button onClick={this.signOut.bind(this)}>
           Sign Out
         </button>
+        <button onClick={this.connectLyft.bind(this)}>
+          Connect Lyft
+        </button>
+        <button onClick={this.props.signInProfile.bind(this)}>
+          Connect Lyft Props
+        </button>
+
+
+
+
+        <li><Link to="/dashboard/test">Test Route</Link></li>
+
 
       </div>
     )

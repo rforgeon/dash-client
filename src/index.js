@@ -13,7 +13,7 @@ import store, { history } from './store';
 import App from './components/App';
 import DeviseLogin from './components/DeviseLogin';
 import Dashboard from './components/Dashboard';
-// import sourceList from './components/SourceList';
+import Spot from './components/Spot'
 
 
 const router = (
@@ -22,6 +22,7 @@ const router = (
     <Route path="/" component={App}>
       <IndexRoute component={DeviseLogin}></IndexRoute>
       <Route path="/dashboard" component={Dashboard}/>
+      <Route path="/dashboard/:spotId" component={Dashboard}/>
     </Route>
   </Router>
   </Provider>

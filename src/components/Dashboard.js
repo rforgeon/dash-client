@@ -7,10 +7,44 @@ import Tile from './Tile';
 
 class Dashboard extends Component{
 
+  configJToker(){
+    Auth.configure([
+      {
+      default: {
+        apiUrl: 'http://localhost:3000/api',
+        tokenFormat: {
+         "access-token": "{{ access-token }}",
+         "token-type":   "Bearer",
+         client:         "{{ client }}",
+         expiry:         "{{ expiry }}",
+         uid:            "{{ uid }}"
+        },
+        authProviderPaths: {
+          lyft:    '/auth/lyft',
+        }
+       }
+      }
+
+    ]);
+  }
+
   componentDidMount(){
+    this.configJToker();
 
     //this.props.getRideHistory();
 
+    
+
+  }
+
+  reloadPage(){
+        var executed = false;
+        return function () {
+            if (!executed) {
+                executed = true;
+                location.reload();
+            }
+        };
   }
 
   callHistory(){
@@ -21,10 +55,10 @@ class Dashboard extends Component{
   connectLyft(){
 
     Auth.oAuthSignIn({provider: 'lyft',
-                      params: {
-                        client: this.props.currentUser.client,
-                        id: this.props.currentUser.id_num
-                            }
+                      // params: {
+                      //   client: this.props.currentUser.client,
+                      //   id: this.props.currentUser.id_num
+                      //       }
                     });
 
     //after connecting, refresh client side token
@@ -62,6 +96,9 @@ class Dashboard extends Component{
         <button onClick={this.props.getYelp.bind(this)}>
           Yelp!
         </button>
+
+        <h2>{this.props.params.spotId}</h2>
+
 
         <ol>
           <div>
