@@ -42,12 +42,33 @@ export function setAuthInput(email, password, passwordConfirm){
 
 export function getRideHistory(){
   return{
-    type: types.FETCH_METRICS_REQUEST
+      type: types.FETCH_METRICS_REQUEST
     }
 }
 
 export function getYelp(){
   return{
-    type: types.FETCH_YELP_REQUEST,
+    type: types.FETCH_YELP_REQUEST
   }
+}
+
+export function getSortedList(){
+  return{
+    type: types.FETCH_SORT_REQUEST,
+  }
+}
+
+export function setSortedList(spots){
+  return{
+    type: types.SET_SPOTS,
+    spots
+  }
+}
+
+export function initDashboard(){
+  return[
+    getRideHistory(),
+    // getYelp(),
+    // setSortedList()
+  ]
 }

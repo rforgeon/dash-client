@@ -48,7 +48,6 @@ class DeviseLogin extends Component{
     document.getElementById("password").value= '';
     document.getElementById("passwordConfirm").value= '';
 
-    this.redirectToDash();
 
   }
 
@@ -116,6 +115,8 @@ class DeviseLogin extends Component{
         <button onClick={this.signOut.bind(this)}>
           Sign Out
         </button>
+
+        <Link to='/Dashboard'>Dashboard</Link>
 
       </div>
     )

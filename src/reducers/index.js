@@ -5,13 +5,12 @@ import currentUser from './currentUser';
 import fetcher from './fetcher';
 import authInput from './authInput';
 import dashboard from './dashboard';
-import tile from './tile';
+import yelp from './yelp';
+import sortedList from './sortedList';
 
 import * as storage from 'redux-storage'
 
 
-const rootReducer = storage.reducer(combineReducers({fetcher, tile, currentUser, authInput, dashboard, routing: routerReducer}));
-
-// const rootReducer = combineReducers({fetcher, tile, currentUser, authInput, dashboard, routing: routerReducer});
+const rootReducer = storage.reducer(combineReducers({fetcher, yelp, currentUser, authInput, dashboard, sortedList, routing: routerReducer}));
 
 export default rootReducer

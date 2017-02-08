@@ -46,7 +46,7 @@ const fetchResultsRequest = (store, action) => {
   const signUpMiddleware = store => next => action => {
 
     if (action.type === 'FETCH_SIGN_UP_REQUEST') {
-      if(!store.getState().fetcher.isFetching) {
+      if(!store.getState().fetcher.isFetchingSignUp) {
         fetchResultsRequest(store, action);
       }
     }

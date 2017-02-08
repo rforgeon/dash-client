@@ -32,7 +32,7 @@ const fetchResultsRequest = (store, action) => {
   const signOutMiddleware = store => next => action => {
 
     if (action.type === 'FETCH_SIGN_OUT_REQUEST') {
-      if(!store.getState().fetcher.isFetching) {
+      if(!store.getState().fetcher.isFetchingSignOut) {
         fetchResultsRequest(store, action);
       }
     }

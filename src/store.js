@@ -4,6 +4,10 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import { browserHistory } from 'react-router';
 import * as storage from 'redux-storage'
 
+import { batchedSubscribe } from 'redux-batched-subscribe'
+
+import multi from 'redux-multi'
+
 
 //import the root reducer
 import rootReducer from './reducers/index';
@@ -14,6 +18,7 @@ import signInMiddleware from './middleware/userSignIn';
 import getLyftTokenMiddleware from './middleware/getLyftToken';
 import metricsMiddleware from './middleware/metrics';
 import yelpMiddleware from './middleware/yelp';
+import sortMiddleware from './middleware/sort';
 
 
 
@@ -22,6 +27,7 @@ const engine = createEngine('my-save-key');
 
 const persistedState = storage.createMiddleware(engine);
 
+
 const middlewares = [
   signUpMiddleware,
   signOutMiddleware,
@@ -29,11 +35,19 @@ const middlewares = [
   getLyftTokenMiddleware,
   metricsMiddleware,
   yelpMiddleware,
+  sortMiddleware,
   persistedState
 ]
 
 
-const createStoreWithMiddleware = applyMiddleware(...middlewares)(createStore);
+
+
+const createStoreWithMiddleware = applyMiddleware(multi,...middlewares)(createStore);
+
+// const createStoreWithBatching = batchedSubscribe(
+//   fn => fn()
+// )(createStoreWithMiddleware)
+
 const store = createStoreWithMiddleware(rootReducer);
 
 const load = storage.createLoader(engine);

@@ -44,7 +44,7 @@ const fetchResultsRequest = (store, action) => {
   const getLyftTokenMiddleware = store => next => action => {
 
     if (action.type === 'FETCH_LYFT_TOKEN_REQUEST') {
-      if(!store.getState().fetcher.isFetching) {
+      if(!store.getState().fetcher.isFetchingLyftToken) {
         fetchResultsRequest(store, action);
       }
     }

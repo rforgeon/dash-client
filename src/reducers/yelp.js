@@ -1,8 +1,14 @@
 import { SET_YELP } from '../constants/ActionTypes'
 
+var defaultState = [
+  {
+    business : [{
+      name: "Cafe Roma"
+    }]
+  }
+]
 
-
-function tile(state = [], action){
+function yelp(state = defaultState, action){
 
   switch(action.type){
 
@@ -10,6 +16,7 @@ function tile(state = [], action){
       console.log('Enter SET_YELP')
       //return the new state with the new comment
       return [...state,{
+        ride_id: action.ride_id,
         business: action.business
       }]
 
@@ -19,4 +26,4 @@ function tile(state = [], action){
   }
 }
 
-export default tile;
+export default yelp;

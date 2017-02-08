@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 const fetchResultsRequest = (store, action) => {
   var currentState = store.getState();
   var rides = currentState.dashboard.lyft.rides
-  var businesses = {};
 
   for(var i = 0; i<rides.length; i++){
 
@@ -30,8 +29,11 @@ const fetchResultsRequest = (store, action) => {
           console.log(object.businesses);
           var business = object.businesses;
 
+          let action = { type: 'SET_YELP', ride_id: ride_id, business: business}
 
-          store.dispatch({ type: 'SET_LYFT', business: business})
+          console.log('dispatching', action)
+          store.dispatch(action)
+          console.log('next state', store.getState())
 
         })
       });
@@ -45,7 +47,7 @@ const fetchResultsRequest = (store, action) => {
   const yelpMiddleware = store => next => action => {
 
     if (action.type === 'FETCH_YELP_REQUEST') {
-      if(!store.getState().fetcher.isFetching) {
+      if(!store.getState().fetcher.isFetchingYelp) {
         fetchResultsRequest(store, action);
       }
     }

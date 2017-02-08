@@ -25,10 +25,13 @@ const fetchResultsRequest = (store, action) => {
       response.json().then(function(object) {
 
         var results = object.ride_history
-        console.log(results)
+
+        console.log("before SET_METRICS")
 
         store.dispatch({ type: 'SET_METRICS', rides: results})
+        console.log("after SET_METRICS")
         store.dispatch({ type: 'FETCH_METRICS_SUCCESS' });
+        console.log("after FETCH_METRICS)SUCCESS")
 
       });
 
@@ -39,8 +42,9 @@ const fetchResultsRequest = (store, action) => {
 
   const metricsMiddleware = store => next => action => {
     if (action.type === 'FETCH_METRICS_REQUEST') {
-
-      if(!store.getState().fetcher.isFetching) {
+      console.log('enter fetch_metrics_request')
+      if(!store.getState().fetcher.isFetchingMetrics) { 
+        console.log('enter fetch_metrics_request false')
         fetchResultsRequest(store, action);
       }
     }
