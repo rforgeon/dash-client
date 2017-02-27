@@ -7,10 +7,11 @@ import authInput from './authInput';
 import dashboard from './dashboard';
 import yelp from './yelp';
 import sortedList from './sortedList';
+import recommendations from './recommendations'
 
 import * as storage from 'redux-storage'
 
 
-const rootReducer = storage.reducer(combineReducers({fetcher, yelp, currentUser, authInput, dashboard, sortedList, routing: routerReducer}));
+const rootReducer = storage.reducer(combineReducers({fetcher, yelp, currentUser, authInput, dashboard, sortedList, recommendations, routing: routerReducer}));
 
 export default rootReducer

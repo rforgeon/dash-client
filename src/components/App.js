@@ -10,7 +10,8 @@ function mapStateToProps(state){
     authInput: state.authInput,
     dashboard: state.dashboard,
     yelp: state.yelp,
-    sortedList: state.sortedList
+    sortedList: state.sortedList,
+    recommendations: state.recommendations
   }
 }
 

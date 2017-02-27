@@ -15,13 +15,17 @@ import DeviseLogin from './components/DeviseLogin';
 import Dashboard from './components/Dashboard';
 // import sourceList from './components/SourceList';
 
+//var requirejs = require('requirejs');
+
+
+
 
 const router = (
   <Provider store={store}>
   <Router history={history}>
     <Route path="/" component={App}>
-      <IndexRoute component={DeviseLogin}></IndexRoute>
-      <Route path="/dashboard" component={Dashboard}/>
+      <IndexRoute component={Dashboard}></IndexRoute>
+      <Route path="/login" component={DeviseLogin}/>
     </Route>
   </Router>
   </Provider>

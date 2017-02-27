@@ -3,7 +3,22 @@ var Auth = require('j-toker');
 import { Link } from 'react-router';
 var load = require('load-script')
 import Tile from './Tile';
+import GoogleTagManager from './GoogleTagManager'
+import RecommendationTile from './RecommendationTile';
+import './styles/Dashboard.css'
 
+var html2canvas = require( 'html2canvas')
+
+import intercom from 'simple-node-intercom-io';
+
+
+
+
+import {
+  ShareButtons,
+  ShareCounts,
+  generateShareIcon
+} from 'react-share';
 
 class Dashboard extends Component{
 
@@ -11,7 +26,7 @@ class Dashboard extends Component{
     Auth.configure([
       {
       default: {
-        apiUrl: 'http://localhost:3000/api',
+        apiUrl: 'https://flashdash-api.herokuapp.com/api',
         tokenFormat: {
          "access-token": "{{ access-token }}",
          "token-type":   "Bearer",
@@ -28,10 +43,34 @@ class Dashboard extends Component{
     ]);
   }
 
-  componentDidMount(){
+  componentWillMount(){
+
     this.configJToker();
 
-    this.props.initDashboard();
+    //initDashboard
+    this.setLyftToken();
+  }
+
+  componentDidMount(){
+    //this.setupIntercomAnalytics();
+
+  }
+
+
+  // Set key & setup must be called first.
+  setupIntercomAnalytics() {
+      intercom.setKey('swc732mt');
+      intercom.setup();
+      //boot intercom
+      // name, email, created timestamp, meta
+      var time = Date.now()
+
+        intercom.boot( {
+            //customUserProperty: 'value'
+        });
+
+        intercom.update();
+
   }
 
   callHistory(){
@@ -42,135 +81,334 @@ class Dashboard extends Component{
   connectLyft(){
 
     Auth.oAuthSignIn({provider: 'lyft',
-                      params: {
-                        client: this.props.currentUser.client,
-                        id: this.props.currentUser.id_num
-                            }
-                    });
+        params: {
+        client: this.props.currentUser.client,
+        id: this.props.currentUser.id_num
+            }
+    });
 
-    //after connecting, refresh client side token
-    //this.props.getLyftToken();
+  }
 
+  shareFacebook(){
+    var tiles;
+    var spots = document.getElementById('tiles');
+    var body = document.getElementsByTagName('body')[0]
+    if ( spots == null){
+      tiles = body
+    }
+    else{
+      tiles = spots
+    }
+
+    html2canvas(tiles, {
+        onrendered: function(canvas) {
+          var dt = canvas.toDataURL('image/jpeg');
+
+          console.log('DT', dt.toString())
+
+          return dt.toString()
+        }
+    });
+
+  }
+
+  shareClicked(){
+    // Create Intercom event
+    console.log('shareIntercomEvent')
+
+    intercom.trackEvent('shareClicked', {
+        //customEventProperty: 'value'
+    });
+
+  }
+
+  lyftConnectClicked(){
+    // Create Intercom event
+    console.log('lyftConnectClicked')
+
+    intercom.trackEvent('lyftConnectClicked', {
+        //customEventProperty: 'value'
+    });
+
+  }
+
+  connectLyftAndNotify(){
+    this.lyftConnectClicked()
+    this.connectLyft()
+  }
+
+  loadingLogic(){
+    if (this.props.dashboard.loading){
+      return(
+        <div>
+          <img className='loader' src='https://cldup.com/H26WtvXwOa.gif'/>
+        </div>
+      )
+    }
+  }
+
+
+  btnLogic(){
+    if (this.props.dashboard.lyftConnected){
+      const { FacebookShareButton } = ShareButtons;
+      const FacebookIcon = generateShareIcon('facebook');
+
+      return(
+
+        <div>
+
+          <div id='facebookButton' className='facebookButtonContain' onClick={this.shareClicked.bind(this)}>
+
+            <FacebookShareButton
+              url={'http://mytopstop.com/'}
+              title={`My Top Lyft Destination is next to... ~${this.getBusiness(0)[0].name}~ and ~${this.getBusiness(0)[1].name}~......Where's Yours?`}
+              picture={`https://maps.googleapis.com/maps/api/staticmap?center=${this.topSpotLat()},${this.topSpotLng()}&zoom=18&size=300x300&markers=color:blue%7Clabel:%7C${this.topSpotLat()},${this.topSpotLng()}&markers=size:tiny&key=AIzaSyBjETxoRSKZDcrG6oycitwJ1i_lJJN9EJI`}
+              className='Demo__some-network__share-button'>
+
+            <img className='facebookButtonImg' src='https://cldup.com/MEf998Gw6H.png'/>
+            </FacebookShareButton>
+
+          </div>
+        </div>
+      )
+    }
+    else{
+      return(
+        <div>
+        <div>
+          <div className='connectNotice'>Connect to explore and share your top destinations!</div>
+          <div className='hand'>👇</div>
+        </div>
+
+        <div className='lyftButtonBack'>
+          <div id='lyftButton' className='lyftButton'>
+            <div  className='container' onClick={this.connectLyftAndNotify.bind(this)}>
+              <div className='connectLyftText '>Connect</div>
+              <div className='lyftImg'>
+                <img src={'https://cldup.com/veoO3qrDey.png'}/>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className='exampleGIF' ><img src ="https://cldup.com/52lKD4DvF8.gif" /></div>
+
+        </div>
+      )
+    }
   }
 
   getBusiness(index){
-    var yelp = this.props.yelp[index].business[0];
-    if(yelp === undefined){
-      return {name: "No Location"}
-    }
-    else{
-      return yelp
+      var yelp = this.props.yelp[index]
+      var undefinedYelpArray = []
+      if ( yelp == undefined){
+        for (var i=0;i<3;i++){
+        undefinedYelpArray.push( {
+          name: "Loading...",
+          neighborhoods:[
+            "Loading..."
+          ]
+          ,
+          rating_img_url: "https://cldup.com/VP7ZH34aTk.gif",
+          url: "Loading...",
+          image_url: "https://cldup.com/5MWrhS0oyJ.gif"
+        })
+       }
+       return undefinedYelpArray
+      }
+      else{
+        var closeYelps = this.props.yelp[index]
+        var yelpArray = []
+        for (var i=0;i<3;i++){
+          var yelp = this.props.yelp[index].business[i]
+          if(yelp === undefined){
+            yelpArray.push( {name: "No Location", image_url: "https://cldup.com/UEDTkBu5rY.png", rating_img_url:"https://cldup.com/ccMVjfH3il.png"} )
+          }
+          else{
+            yelpArray.push( yelp )
+          }
+        }
+        return yelpArray
     }
   }
 
-  rankSpots(){
-    //provide a unique sorted list with a count of each repeated location
-
-    var ridesLatLng = []
-    var ridesArray = this.props.dashboard.lyft.rides;
-
-    // //grab only lat and lng of each location
-    // for (var i = 0; i < ridesArray.length; i++){
-    //   ridesLatLng.push({lat:ridesArray[i].destination.lat,lng:ridesArray[i].destination.lng})
-    // }
-
-    //get unique locations and count duplicates
-    var arr = ridesArray
-
-    function unique(arr) {
-        var a = [], b = [], prev_lat, prev_lng;
-
-        arr.sort();
-        console.log("sorted:",arr.sort())
-        for ( var i = 0; i < arr.length; i++ ) {
-            if ( arr[i].destination.lat == prev_lat && arr[i].destination.lng == prev_lng  ) {
-              b[b.length-1]++;
-            } else {
-              a.push(arr[i]);
-              b.push(1);
-            }
-            prev_lat = arr[i].destination.lat;
-            prev_lng = arr[i].destination.lng;
+  getRec(index){
+      var yelp = this.props.recommendations[index]
+      var undefinedYelpArray = []
+      if ( yelp == undefined){
+        for (var i=0;i<3;i++){
+        undefinedYelpArray.push( {
+          name: "Loading...",
+          neighborhoods:[
+            "Loading..."
+          ]
+          ,
+          rating_img_url: "https://cldup.com/VP7ZH34aTk.gif",
+          url: "Loading...",
+          image_url: "https://cldup.com/5MWrhS0oyJ.gif",
+          snippet_image_url: "https://cldup.com/VP7ZH34aTk.gif",
+          snippet_text: "Loading..."
+        })
+       }
+       return undefinedYelpArray
+      }
+      else{
+        var closeYelps = this.props.recommendations[index]
+        var yelpArray = []
+        for (var i=0;i<3;i++){
+          var yelp = this.props.recommendations[index][i]
+          if(yelp === undefined){
+            yelpArray.push( {name: "No Location", image_url: "https://cldup.com/UEDTkBu5rY.png", rating_img_url:"https://cldup.com/ccMVjfH3il.png", snippet_text: "No Review"} )
+          }
+          else{
+            yelpArray.push( yelp )
+          }
         }
-
-        return [a, b];
+        return yelpArray
     }
+  }
 
-    var result = unique(arr);
-
-    // function removeDuplicates(originalArray) {
-    //      var newArray = [];
-    //      var lookupObject  = {};
-    //
-    //      for(var i in originalArray) {
-    //         lookupObject[originalArray[i].destination.lat] = originalArray[i];
-    //      }
-    //
-    //      for(i in lookupObject) {
-    //          newArray.push(lookupObject[i]);
-    //      }
-    //       return newArray;
-    //  }
-
-    // var uniqueArray = removeDuplicates(ridesArray);
-    // console.log("uniqueArray is: ",uniqueArray);
-
-    //map two seperate arrays (unique location and count) to a single array of objects
-    var countedUnique = [];
-    for (var i = 0; i < result[0].length; i++){
-      countedUnique.push({lyft: result[0][i],count: result[1][i]})
+  setLyftToken(){
+    if (this.props.currentUser.lyft_token == null){
+        this.props.setLyftTokenParam()
     }
-    console.log("countedUnique",countedUnique)
+  }
 
-    //sort unique spots by count
-    var countedUniqueSorted = countedUnique.sort(function(a, b){
-        return b.count-a.count;
-    })
-    console.log("countedUniqueSorted",countedUniqueSorted);
+  topSpotLat(){
+    var picLat = this.props.sortedList[0]
+    if(picLat==undefined){
+      return 0
+    }
+    else if (picLat.lyft.destination == undefined){
+      return 0
+    }else{
+      return picLat.lyft.destination.lat
+    }
+  }
 
-    this.props.setSortedList(countedUniqueSorted);
-  };
+  topSpotLng(){
+    console.log("enter TOPSPOT LNG")
+    var picLng = this.props.sortedList[0]
+    if(picLng==undefined|| null){
+      return '37.79984'
+    }
+    else if (picLng.lyft.destination == undefined){
+      console.log("enter undefined Lng", picLng.lyft.destination )
 
+      return '-122.44174'
 
+    }else{
+      console.log("enter correct Lng", picLng.lyft.destination.lng)
+      return picLng.lyft.destination.lng
+    }
+  }
 
   render() {
+
+
+
+
     return(
 
 
       <div>
+
+      <GoogleTagManager gtmId='GTM-KWMMHC4' />
+
+
+      {this.btnLogic()}
+      {this.loadingLogic()}
+
+
         <div>
-          <h1>Dashboard</h1>
+
         </div>
 
-        <div>
-          <h3>Current User: {this.props.currentUser.uid}</h3>
-        </div>
-
-        <button onClick={this.connectLyft.bind(this)}>
-          Connect Lyft
-        </button>
-
-        <button onClick={this.callHistory.bind(this)}>
-          Get Ride History
-        </button>
-
-        <button onClick={this.props.getLyftToken.bind(this)}>
-          Refresh Token
-        </button>
-
-        <button onClick={this.rankSpots.bind(this)}>
-          Rank Spots
-        </button>
 
 
+          <div id='tiles' className='container'>
+            {this.props.sortedList.slice(0,3).map((tile, index) =>
+              <Tile
+                key={index}
+                lat={tile.lyft.destination.lat}
+                lng={tile.lyft.destination.lng}
+                count={tile.count}
+                yelp={this.getBusiness(index)}
+                index={index}
+                deleteSpot={this.props.deleteSpot}
+                tile={tile}
+              />
+            )}
+            </div>
 
-        <ol>
-          <div>
+            <div id='tiles' className='container'>
+              {this.props.recommendations.slice(0,1).map((rec, index) =>
+                <RecommendationTile
+                  key={index}
+                  yelp={this.getRec(index)}
+                  index={index}
+                  //deleteSpot={this.props.deleteSpot}
+                  rec={rec}
+                />
+              )}
+              </div>
 
-      
+              <div id='tiles' className='container'>
+                {this.props.sortedList.slice(3,6).map((tile, index) =>
+                  <Tile
+                    key={index}
+                    lat={tile.lyft.destination.lat}
+                    lng={tile.lyft.destination.lng}
+                    count={tile.count}
+                    yelp={this.getBusiness(index+3)}
+                    index={index+3}
+                    deleteSpot={this.props.deleteSpot}
+                    tile={tile}
+                  />
+                )}
+                </div>
 
-          </div>
-        </ol>
+                <div id='tiles' className='container'>
+                  {this.props.recommendations.slice(1,2).map((rec, index) =>
+                    <RecommendationTile
+                      key={index}
+                      yelp={this.getRec(index+1)}
+                      index={index+1}
+                      //deleteSpot={this.props.deleteSpot}
+                      rec={rec}
+                    />
+                  )}
+                  </div>
+
+              <div id='tiles' className='container'>
+                {this.props.sortedList.slice(6,this.props.sortedList.length).map((tile, index) =>
+                  <Tile
+                    key={index}
+                    lat={tile.lyft.destination.lat}
+                    lng={tile.lyft.destination.lng}
+                    count={tile.count}
+                    yelp={this.getBusiness(index+6)}
+                    index={index+6}
+                    deleteSpot={this.props.deleteSpot}
+                    tile={tile}
+                  />
+                )}
+                </div>
+
+                <div id='tiles' className='container'>
+                  {this.props.recommendations.slice(2,3).map((rec, index) =>
+                    <RecommendationTile
+                      key={index}
+                      yelp={this.getRec(index+2)}
+                      index={index+2}
+                      //deleteSpot={this.props.deleteSpot}
+                      rec={rec}
+                    />
+                  )}
+                  </div>
+
+
+
 
       </div>
 

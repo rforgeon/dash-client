@@ -6,7 +6,7 @@ const fetchResultsRequest = (store, action) => {
   var client = currentState.currentUser.client;
   var token = currentState.currentUser.token;
 
-  const url = 'http://localhost:3000/api/auth/sign_out';
+  const url = 'https://flashdash-api.herokuapp.com/api/auth/sign_out';
 
   fetch(url,{
     method: 'DELETE',

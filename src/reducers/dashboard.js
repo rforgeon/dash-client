@@ -1,19 +1,8 @@
-import { SET_METRICS } from '../constants/ActionTypes'
+import { SET_METRICS, DISCONNECT_LYFT, LOADING_METRICS } from '../constants/ActionTypes'
 
 
 var defaultState = {
-  lyft: {
-    rides:
-      [
-        {
-        ride_id: 1,
-        destination:{
-          lat: 37.799959,
-          lng: -122.409545
-        }
-      }
-    ]
-  }
+  lyftConnected: false
 }
 
 function dashboard(state = defaultState, action){
@@ -23,8 +12,32 @@ function dashboard(state = defaultState, action){
     case SET_METRICS:
       console.log("SET_METRICS")
       return{
+        lyftConnected: true,
+        loading: false,
         lyft: {
           rides: action.rides
+        }
+
+      }
+
+    case LOADING_METRICS:
+      console.log("SET_METRICS")
+      return{
+        lyftConnected: true,
+        loading: true,
+        lyft: {
+          rides: state.rides
+        }
+
+      }
+
+    case DISCONNECT_LYFT:
+      console.log("DISCONNECT_LYFT Reducer")
+      return{
+        lyftConnected: false,
+        loading: false,
+        lyft: {
+          rides: state.rides
         }
 
       }

@@ -31,6 +31,12 @@ export function getLyftToken(){
   }
 }
 
+export function setLyftTokenParam(){
+  return{
+    type: types.FETCH_LYFT_TOKEN_REQUEST,
+  }
+}
+
 export function setAuthInput(email, password, passwordConfirm){
   return{
     type: types.AUTH_INPUT,
@@ -56,6 +62,36 @@ export function getSortedList(){
   return{
     type: types.FETCH_SORT_REQUEST,
   }
+}
+
+export function getRecs(){
+  return{
+    type: types.FETCH_RECOMMENDATION_REQUEST
+  }
+}
+
+
+
+export function deleteLyft(index){
+  return{
+    type: types.REMOVE_SPOT,
+    index
+  }
+}
+
+export function deleteYelp(index){
+  return{
+    type: types.REMOVE_YELP,
+    index
+  }
+}
+
+export function deleteSpot(index){
+  return[
+    deleteLyft(index),
+    deleteYelp(index),
+    getRecs()
+  ]
 }
 
 export function setSortedList(spots){

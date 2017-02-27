@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import './styles/Dashboard.css'
 
 const Main = React.createClass({
 
@@ -16,10 +17,14 @@ const Main = React.createClass({
     return(
       <div >
         <div >
-          <h1>
-            ⚡️
-            <Link to={this.setTitleLink}>FlashDash</Link>
-          </h1>
+
+            <div className='titleBar'>
+              <div className='titleBarText'>
+                <span className='titleCars'>🚗🚕🚙 </span>
+                My Top Stop
+                <span className='titleCars'> 🚙🚕🚗</span>
+              </div>
+            </div>
           {React.cloneElement(this.props.children, this.props)}
         </div>
       </div>

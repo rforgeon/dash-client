@@ -12,7 +12,7 @@ class DeviseLogin extends Component{
     Auth.configure([
       {
       default: {
-        apiUrl: 'http://localhost:3000/api',
+        apiUrl: 'https://flashdash-api.herokuapp.com/api',
         tokenFormat: {
          "access-token": "{{ access-token }}",
          "token-type":   "Bearer",
@@ -116,7 +116,7 @@ class DeviseLogin extends Component{
           Sign Out
         </button>
 
-        <Link to='/Dashboard'>Dashboard</Link>
+        <Link to='/'>Dashboard</Link>
 
       </div>
     )

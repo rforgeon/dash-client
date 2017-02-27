@@ -15,11 +15,11 @@ import rootReducer from './reducers/index';
 import signUpMiddleware from './middleware/userSignUp';
 import signOutMiddleware from './middleware/userSignOut';
 import signInMiddleware from './middleware/userSignIn';
-import getLyftTokenMiddleware from './middleware/getLyftToken';
+import setLyftTokenMiddleware from './middleware/setLyftToken';
 import metricsMiddleware from './middleware/metrics';
 import yelpMiddleware from './middleware/yelp';
 import sortMiddleware from './middleware/sort';
-
+import recommendationMiddleware from './middleware/recommendations'
 
 
 import createEngine from 'redux-storage-engine-localstorage';
@@ -32,11 +32,12 @@ const middlewares = [
   signUpMiddleware,
   signOutMiddleware,
   signInMiddleware,
-  getLyftTokenMiddleware,
+  setLyftTokenMiddleware,
   metricsMiddleware,
   yelpMiddleware,
   sortMiddleware,
-  persistedState
+  recommendationMiddleware
+  //persistedState
 ]
 
 

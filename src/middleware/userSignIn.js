@@ -6,7 +6,7 @@ const fetchResultsRequest = (store, action) => {
   var password = currentState.authInput.password;
 
 
-  const url = 'http://localhost:3000/api/auth/sign_in';
+  const url = 'https://flashdash-api.herokuapp.com/api/auth/sign_in';
 
   fetch(url,{
     method: 'post',

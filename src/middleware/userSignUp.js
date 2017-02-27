@@ -6,7 +6,7 @@ const fetchResultsRequest = (store, action) => {
   var password = currentState.authInput.password;
   var passwordConfirm = currentState.authInput.passwordConfirm;
 
-  const url = 'http://localhost:3000/api/auth';
+  const url = 'https://flashdash-api.herokuapp.com/api/auth';
 
   fetch(url,{
     method: 'post',

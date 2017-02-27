@@ -1,12 +1,6 @@
-import { SET_YELP } from '../constants/ActionTypes'
+import { SET_YELP, REMOVE_YELP } from '../constants/ActionTypes'
 
-var defaultState = [
-  {
-    business : [{
-      name: "Cafe Roma"
-    }]
-  }
-]
+var defaultState = []
 
 function yelp(state = defaultState, action){
 
@@ -14,11 +8,17 @@ function yelp(state = defaultState, action){
 
     case SET_YELP:
       console.log('Enter SET_YELP')
-      //return the new state with the new comment
       return [...state,{
         ride_id: action.ride_id,
         business: action.business
       }]
+
+    case REMOVE_YELP:
+      console.log('After REMOVE_YELP')
+      return [
+        ...state.slice(0,action.index),
+        ...state.slice(action.index+1)
+      ]
 
 
     default:
