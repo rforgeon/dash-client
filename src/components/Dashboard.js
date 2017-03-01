@@ -116,9 +116,6 @@ class Dashboard extends Component{
     // Create Intercom event
     console.log('shareIntercomEvent')
 
-    intercom.trackEvent('shareClicked', {
-        //customEventProperty: 'value'
-    });
 
   }
 
@@ -126,9 +123,6 @@ class Dashboard extends Component{
     // Create Intercom event
     console.log('lyftConnectClicked')
 
-    intercom.trackEvent('lyftConnectClicked', {
-        //customEventProperty: 'value'
-    });
 
   }
 
@@ -160,7 +154,7 @@ class Dashboard extends Component{
           <div id='facebookButton' className='facebookButtonContain' onClick={this.shareClicked.bind(this)}>
 
             <FacebookShareButton
-              url={'http://mytopstop.com/'}
+              url={'http://mytopstop.com/?utm_source=facebookTopSpotShare'}
               title={`My Top Lyft Destination is next to... ~${this.getBusiness(0)[0].name}~ and ~${this.getBusiness(0)[1].name}~......Where's Yours?`}
               picture={`https://maps.googleapis.com/maps/api/staticmap?center=${this.topSpotLat()},${this.topSpotLng()}&zoom=18&size=300x300&markers=color:blue%7Clabel:%7C${this.topSpotLat()},${this.topSpotLng()}&markers=size:tiny&key=AIzaSyBjETxoRSKZDcrG6oycitwJ1i_lJJN9EJI`}
               className='Demo__some-network__share-button'>
