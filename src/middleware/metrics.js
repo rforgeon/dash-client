@@ -2,6 +2,7 @@ import fetch from 'isomorphic-fetch';
 
 const fetchResultsRequest = (store, action) => {
 
+
   //get last 2 months of rides
     var d = new Date();
     var m = d.getMonth();

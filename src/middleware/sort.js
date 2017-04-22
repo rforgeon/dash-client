@@ -1,6 +1,16 @@
 import fetch from 'isomorphic-fetch';
 
 const fetchResultsRequest = (store, action) => {
+
+  //set dataLayer
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    'event': 'click',
+    'goalID': 'lyftClicked',
+    'metric1': '1'
+  });
+
+
   //provide a unique sorted list with a count of each repeated location
   var currentState = store.getState();
   var ridesArray = currentState.dashboard.lyft.rides;
